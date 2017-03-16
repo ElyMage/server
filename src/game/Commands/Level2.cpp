@@ -2480,52 +2480,52 @@ bool ChatHandler::HandleKickPlayerCommand(char *args)
 
 bool ChatHandler::HandleGroupInfoCommand(char* args)
 {
-	Player* target;
-	ObjectGuid target_guid;
-	std::string target_name;
-	if (!ExtractPlayerTarget(&args, &target, &target_guid, &target_name))
-		return false;
+    Player* target;
+    ObjectGuid target_guid;
+    std::string target_name;
+    if (!ExtractPlayerTarget(&args, &target, &target_guid, &target_name))
+        return false;
 
-	if (!target)
-	{
-		PSendSysMessage(LANG_NO_CHAR_SELECTED);
-		return false;
-	}
+    if (!target)
+    {
+        PSendSysMessage(LANG_NO_CHAR_SELECTED);
+        return false;
+    }
 
-	auto group = target->GetGroup();
+    auto group = target->GetGroup();
 
-	if (!group)
-	{
-		PSendSysMessage(LANG_NOT_IN_GROUP);
-		return false;
-	}
+    if (!group)
+    {
+        PSendSysMessage(LANG_NOT_IN_GROUP);
+        return false;
+    }
 
-	std::vector<std::string> names;
+    std::vector<std::string> names;
 
-	for (GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr = itr->next())
-	{
-		if (Player* player = itr->getSource())
-		{
-			names.emplace_back(player->GetName());
-		}
-	}
+    for (GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr = itr->next())
+    {
+        if (Player* player = itr->getSource())
+        {
+            names.emplace_back(player->GetName());
+        }
+    }
 
-	std::stringstream stream;
+    std::stringstream stream;
 
-	for (std::size_t i = 0, j = names.size(); i != j; ++i)
-	{
-		stream << names[i];
+    for (std::size_t i = 0, j = names.size(); i != j; ++i)
+    {
+        stream << names[i];
 		
-		if (i + 1 != j)
-		{
-			stream << ", ";
-		}
-	}
+        if (i + 1 != j)
+        {
+            stream << ", ";
+        }
+    }
 
-	PSendSysMessage(LANG_GROUP_INFO, (group->isRaidGroup() ? "Raid" : "Party"),
-	                playerLink(std::to_string(group->GetId())).c_str(), playerLink(group->GetLeaderName()).c_str(),
-	                playerLink("Test").c_str(), group->GetMembersCount(), stream.str().c_str());
-	return true;
+    PSendSysMessage(LANG_GROUP_INFO, (group->isRaidGroup() ? "Raid" : "Party"),
+                    playerLink(std::to_string(group->GetId())).c_str(), playerLink(group->GetLeaderName()).c_str(),
+                    playerLink("Test").c_str(), group->GetMembersCount(), stream.str().c_str());
+    return true;
 }
 
 //show info of player
